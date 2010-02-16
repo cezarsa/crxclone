@@ -1,0 +1,14 @@
+.extension {
+  border-bottom: 1px solid #999;
+  margin-bottom: 2px;
+  padding: 3px;
+}
+
+.extension .clones {
+  border: 1px solid #555;
+  margin-left: 15px;
+  padding: 5px;
+}
+
+.extension .clones .clone {
+}

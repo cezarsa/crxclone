@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/css/crxclone.css" />
+  </head>
+  <body>
+    <% @extensions.each do |ext| %>
+      <div class="extension">
+        Id: <%= ext.extension_id %><br/>
+        Clones: <%= ext.clones.count %><br/>
+        Last Clone: <%= ext.clones.first(:order => [ :created_at.desc ]).created_at %>
+        <div class="clones">
+          <% ext.clones.each do |clone| %>
+            <div class="clone">
+              Id: <%= clone.generated_id %><br/>
+              Last Update: <%= clone.last_update_request %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </body>
+</html>
