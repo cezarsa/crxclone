@@ -16,6 +16,15 @@ class Extension
   UPDATE_URL = 'http://clients2.google.com/service/update2/crx'
   HTTP_MODULE = AppEngine::URLFetch::HTTP
 
+  def last_clone_date
+    last_clone = clones.first(:order => [ :created_at.desc ])
+    if last_clone
+      last_clone.created_at
+    else
+      nil
+    end
+  end
+
   def clone_extension
     cached = self.cached_extension
     current_version = nil

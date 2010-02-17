@@ -8,7 +8,7 @@
       <div class="extension">
         Id: <%= ext.extension_id %><br/>
         Clones: <%= ext.clones.count %><br/>
-        Last Clone: <%= ext.clones.first(:order => [ :created_at.desc ]).created_at %>
+        Last Clone: <%= ext.last_clone_date %>
         <div class="clones">
           <% ext.clones.each do |clone| %>
             <div class="clone">
