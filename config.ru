@@ -4,7 +4,10 @@ $logger = AppEngine::Logger.new
 require 'appengine-rack'
 require 'crxclone'
 
-AppEngine::Rack.configure_app(:application => 'crxclone', :version => 1)
+AppEngine::Rack.configure_app(
+  :application => 'crxclone',
+  :version => 1,
+  :precompilation_enabled => true)
 
 =begin
 configure :development do
