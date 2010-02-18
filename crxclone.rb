@@ -2,7 +2,6 @@ require 'sinatra'
 require 'dm-core'
 require 'builder'
 
-#DataMapper::Logger.new($stdout, :debug)
 DataMapper.setup(:default, "appengine://auto")
 
 Dir['models/*.rb'].each do |model_file|
@@ -16,7 +15,10 @@ helpers do
       'Content-Length'            => data.size.to_s,
       'Content-Type'              => 'application/x-chrome-extension',
       'Content-Disposition'       => 'attachment; filename="extension.crx"',
-      'Content-Transfer-Encoding' => 'binary')
+      'Content-Transfer-Encoding' => 'binary',
+      'Cache-Control'             => 'private, no-cache',
+      'Expires'                   => '0')
+
     data
   end
 
