@@ -58,9 +58,13 @@ helpers do
 end
 
 get '/' do
+  erb :index
+end
+
+get '/extensions/list' do
   @extensions = Extension.all
 
-  erb :index
+  erb :extensions_list
 end
 
 get '/keep_alive' do
@@ -76,6 +80,38 @@ get '/extension/:id/clone' do
   end
 
   send_data(ext.clone_extension.pack_clone)
+end
+
+post '/extension/clone' do
+  extension_str = (params[:extension] || '').strip
+
+  def send_with_rescue(id)
+    ext = Extension.first(:extension_id => id)
+    unless ext
+      ext = Extension.new(:extension_id => id)
+    end
+    begin
+      send_data(ext.clone_extension.pack_clone)
+    rescue ExtensionNotFoundError => e
+      @error = 'Extension not found in the gallery.'
+      erb :index
+    end
+  end
+
+  if extension_str.size == 32
+    send_with_rescue(extension_str)
+  else
+    if extension_str =~ /^#{Extension::GALLERY_URL}([a-p]{32})$/
+      send_with_rescue($1)
+    else
+      @error = 'Invalid extension string, you must enter an extension ID or gallery URL.'
+      erb :index
+    end
+  end
+end
+
+get '/extension/:id' do
+  redirect Extension::GALLERY_URL + params[:id]
 end
 
 get '/cloned_extension/request_update' do

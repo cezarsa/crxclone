@@ -13,6 +13,7 @@ class Extension
   has n, :clones, 'ExtensionClone'
   has 1, :cached_extension
 
+  GALLERY_URL = 'https://chrome.google.com/extensions/detail/'
   UPDATE_URL = 'http://clients2.google.com/service/update2/crx'
   HTTP_MODULE = AppEngine::URLFetch::HTTP
 
@@ -68,7 +69,7 @@ class Extension
     doc = REXML::Document.new(response)
     elem = doc.elements["gupdate/app[@appid='#{self.extension_id}']/updatecheck"]
 
-    raise ExtensionNotFoundError if elem.nil?
+    raise ExtensionNotFoundError if elem.nil? or elem.attributes['status'] == 'error-unknownapplication'
 
     [
       elem.attributes['status'] != 'noupdate',

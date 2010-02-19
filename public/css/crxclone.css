@@ -1,3 +1,75 @@
+html, body {
+  font-family: Helvetica, Arial, sans-serif;
+  font-style: normal;
+}
+
+#main_area {
+  width: 602px;
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+input#extension {
+  width: 600px;
+  line-height: 50px;
+  font-size: 1.2em;
+  border: 1px solid #bbb;
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(white), to(#ccc));
+  display: block;
+  -webkit-border-radius: 10px;
+}
+
+input#extension:focus {
+  -webkit-border-radius: 10px;
+  outline: 0;
+  border: 2px solid #446;
+}
+
+#submit_button {
+  display: block;
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100px;
+  height: 35px;
+  font-weight: bold;
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#eef), color-stop(0.2, #ddf), color-stop(0.8, #ddf), to(#eef));
+  border: 0px solid #000;
+  -webkit-border-radius: 10px;
+  cursor: pointer;
+}
+
+#submit_button:hover {
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#eef), color-stop(0.2, #aaf), color-stop(0.8, #aaf), to(#eef));
+}
+
+#whatisit {
+  margin-left: auto;
+  margin-right: auto;
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ccc), to(white));
+  -webkit-border-radius: 10px;
+  width: 700px;
+  padding: 10px;
+}
+
+#whatisit_before {
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 700px;
+  font-size: 0.8em;
+}
+
+.error {
+  color: red;
+}
+
+.subparagraph {
+  margin-left: 10px;
+  font-size: 0.8em;
+}
+
 .extension {
   border-bottom: 1px solid #999;
   margin-bottom: 2px;

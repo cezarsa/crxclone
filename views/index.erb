@@ -1,23 +1,83 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="keywords" content="google chrome, google chrome extension, extension, chromium">
+
     <link rel="stylesheet" type="text/css" href="/css/crxclone.css" />
-  </head>
-  <body>
-    <% @extensions.each do |ext| %>
-      <div class="extension">
-        Id: <%= ext.extension_id %><br/>
-        Clones: <%= ext.clones.count %><br/>
-        Last Clone: <%= ext.last_clone_date %>
-        <div class="clones">
-          <% ext.clones.each do |clone| %>
-            <div class="clone">
-              Id: <%= clone.generated_id %><br/>
-              Last Update: <%= clone.last_update_request %>
-            </div>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
-  </body>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js" type="text/javascript"></script>
+
+    <title>crxclone - Chromium Extensions Cloner</title>
+</head>
+<body>
+
+<div id="main_area">
+  <form action="/extension/clone" method="POST">
+    <label for="extension">Paste an extension ID or gallery URL:</label>
+    <input id="extension" type="text" name="extension"/>
+    <span class="error"><%=@error%></span>
+
+    <input id="submit_button" type="submit" name="button" value="Clone!"/>
+  </form>
+</div>
+<div id="whatisit_before">
+  Important notice: I don't know how long this will work until my daily App Engine quota ends.
+</div>
+<div id="whatisit">
+  <h3>Chromium Extensions Cloner</h3>
+  <p>
+    Crxclone allows you to install multiple copies (or clones) of the same Google Chrome extension.
+  </p>
+  <p class="subparagraph">
+    Now you ask, why the hell would I want something like this? Well, I developed this service primarily as a way to
+    allow users of my Twitter client (<a href="https://chrome.google.com/extensions/detail/encaiiljifbdbjlphpgpiimidegddhic">Chromed Bird</a>) to have access to multiple Twitter accounts.
+    But then I figured out that many people might take benefit from this, other twitter clients, extensions doing any kind of notification
+    (like Google Reader notifications), stock trackers, you name it. If you want to have access to multiple accounts with different
+    browser actions, crxclone might be the solution.
+  </p>
+  <p>
+    May I provide a direct clone link to my users?
+  </p>
+  <p class="subparagraph">
+    Sure, you don't have to access this page everytime you want a clone. Just point your browser to http://crxclone.appspot.com/extension/{id}/clone
+    and it will create a fresh clone from the extension the given {id} refer to. Example: <a href="http://crxclone.appspot.com/extension/encaiiljifbdbjlphpgpiimidegddhic/clone">http://crxclone.appspot.com/extension/encaiiljifbdbjlphpgpiimidegddhic/clone</a>
+  </p>
+  <p>
+    What's it going to do to my extension?
+  </p>
+  <p class="subparagraph">
+    Crxclone will grab your extension based on its ID directly from Chrome extensions gallery. Once we have the extension, crxclone
+    will unpack it, update its name and description fields stating it's a clone, update its autoupdate url to be proxied by crxclone service,
+    generate a new ID for the cloned extension, pack it again, and finally make it available to you.
+  </p>
+  <p>
+    So, autoupdate will keep working even for cloned extensions?
+  </p>
+  <p class="subparagraph">
+    That's the plan. Every autoupdate request made by Chrome for one of the clones will be directed to crxclone. Crxclone will then find out
+    what was the original extension and then redirect the update request to Chrome's gallery. If there's a new version available at the gallery
+    crxclone will repack the extension using clone's ID the same way as before.
+  </p>
+  <p>
+    Why should I trust you won't insert any malicious code in my extension?
+  </p>
+  <p class="subparagraph">
+    The good thing is, you don't have to trust me. Crxclone is an open-source project and it's available free at <a href="http://github.com/cezarsa/crxclone">http://github.com/cezarsa/crxclone</a>.
+    You're free to review it and even host it yourself exclusively for your extension. Currently everything is prepared to run under
+    Google App Engine but you could adapt it to run under other environments.
+  </p>
+  <p>
+    Acknowledgments
+  </p>
+  <p class="subparagraph">
+    This is a JRuby project running under Google App Engine. Such a thing would have been impossible without JRuby itself, and it
+    would have been extremely more complicated without all the work from appengine-jruby folks. Thanks a lot dudes.<br/>
+    The extension packing code is based on <a href="http://github.com/Constellation/crxmake">crxmake project</a> by Constellation.
+    My first intention was to use it directly inside crxclone but it wasn't possible due to <a href="http://github.com/cezarsa/crxclone/blob/master/models/extension_clone.rb#L20">many architectural limitations</a> inside
+    App Engine, so I had to rewrite everything.
+  </p>
+</div>
+
+
+</body>
 </html>
