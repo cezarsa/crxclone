@@ -12,18 +12,18 @@
 <body>
 
 <div id="main_area">
-  <form action="/extension/clone" method="POST">
+  <form id="main_form" action="/extension/clone" method="POST">
     <label for="extension">Paste an extension ID or gallery URL:</label>
     <input id="extension" type="text" name="extension"/>
     <span class="error"><%=@error%></span>
 
-    <input id="submit_button" type="submit" name="button" value="Clone!"/>
+    <a class="awesome grab_link" href="javascript:document.getElementById('main_form').submit();">Clone!</a>
   </form>
 </div>
 <div id="whatisit_before">
   Important notice: I don't know how long this will work until my daily App Engine quota ends.
 </div>
-<div id="whatisit">
+<div id="whatisit" class="gradient_block">
   <h3>Chromium Extensions Cloner</h3>
   <p>
     Crxclone allows you to install multiple copies (or clones) of the same Google Chrome extension.

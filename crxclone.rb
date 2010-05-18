@@ -61,23 +61,26 @@ get '/' do
   erb :index
 end
 
-get '/extensions/list' do
-  @extensions = Extension.all
-
-  erb :extensions_list
-end
-
 get '/keep_alive' do
   $logger.info 'keep alive'
 
   ''
 end
 
-get '/extension/:id/clone' do
+get '/extension/:id' do
+  @extension = Extension.find_or_create(params[:id]).update_cached_data!
+
+  erb :extension_info
+end
+
+get '/extension/:id/icon.png' do
   ext = Extension.first(:extension_id => params[:id])
-  unless ext
-    ext = Extension.new(:extension_id => params[:id])
-  end
+
+  ext.cached_extension.icon
+end
+
+get '/extension/:id/clone' do
+  ext = Extension.find_or_create(params[:id])
 
   send_data(ext.clone_extension.pack_clone)
 end
@@ -86,12 +89,9 @@ post '/extension/clone' do
   extension_str = (params[:extension] || '').strip
 
   def send_with_rescue(id)
-    ext = Extension.first(:extension_id => id)
-    unless ext
-      ext = Extension.new(:extension_id => id)
-    end
     begin
-      send_data(ext.clone_extension.pack_clone)
+      Extension.find_or_create(id).update_cached_data!
+      redirect '/extension/' + id
     rescue ExtensionNotFoundError => e
       @error = 'Extension not found in the gallery.'
       erb :index
@@ -110,8 +110,10 @@ post '/extension/clone' do
   end
 end
 
-get '/extension/:id' do
-  redirect Extension::GALLERY_URL + params[:id]
+get '/extensions/list' do
+  @extensions = Extension.all
+
+  erb :extensions_list
 end
 
 get '/cloned_extension/request_update' do
