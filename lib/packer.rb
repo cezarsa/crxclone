@@ -1,4 +1,4 @@
-require 'WEB-INF/lib/jopenssl.jar'
+require 'lib/ssl/jopenssl.jar'
 require 'java'
 
 class ZipEntry

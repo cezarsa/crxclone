@@ -43,13 +43,8 @@ private
   end
   
   def get_i18n_entry(entry, locale)
-    file_entry = packer.find do |e|
-      #FIXME return the entry from the received locale
-      if e.name =~ /^_locales.*messages\.json/
-        true
-      end
-    end
-    json_data = JSON.parse(file_entry.data)
+    file_entry = packer['_locales/' + locale + '/messages.json']
+    json_data = JSON.parse(file_entry)
     if entry_value = json_data[entry]
       entry_value['message']
     end
