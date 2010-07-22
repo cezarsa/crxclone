@@ -31,16 +31,29 @@ class ExtensionClone
     cached = extension.cached_extension
     raise NoCacheDataFoundError if cached.nil?
 
-    @packer = cached.packer
-    if self.generated_key
-      @packer.set_key(self.generated_key)
-    else
-      self.generated_key, self.generated_id = @packer.generate_key
-      save
-    end
-    update_manifest
+    data = nil
 
-    data = @packer.pack
+    retry_count = 4
+    while retry_count > 0
+      # Let's try more then once due to some
+      # weird JRuby reflection errors.
+      begin
+        @packer = cached.packer
+        if self.generated_key
+          @packer.set_key(self.generated_key)
+        else
+          self.generated_key, self.generated_id = @packer.generate_key
+          save
+        end
+        update_manifest
+
+        data = @packer.pack
+        break
+      rescue
+        retry_count -= 1
+      end
+    end
+
     data
   end
 
