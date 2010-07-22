@@ -1,4 +1,3 @@
-require 'lib/ssl/jopenssl.jar'
 require 'java'
 
 class ZipEntry
@@ -21,7 +20,7 @@ class Packer
   #   to be done on memory.
   # * crxmake uses zipruby which is a C extension and thus not available on JRuby
   # * There were a lot of issues trying to use jruby-openssl, as a workaround I'm relying
-  #   on low level bouncy castle classes, and yes, I know this is very ugly.
+  #   on java.security.* libraries.
 
   # Constants from crxmake
   MAGIC = 'Cr24'
@@ -34,21 +33,20 @@ class Packer
   end
 
   def set_key(key_str)
-    key_factory = org.bouncycastle.jce.provider.JDKKeyFactory::RSA.new
+    key_factory = java.security.KeyFactory.getInstance("RSA");
 
     priv_key_spec = java.security.spec.PKCS8EncodedKeySpec.new(key_str.to_java_bytes)
-    @private_key = key_factory.engine_generate_private(priv_key_spec)
+    @private_key = key_factory.generate_private(priv_key_spec)
 
     public_key_spec = java.security.spec.RSAPublicKeySpec.new(@private_key.get_modulus, @private_key.get_public_exponent)
-    @public_key = key_factory.engine_generate_public(public_key_spec)
+    @public_key = key_factory.generate_public(public_key_spec)
     fix_public_key!
   end
 
   def generate_key
-    key_generator = org.bouncycastle.jce.provider.JDKKeyPairGenerator::RSA.new
-    key_generator.initialize__method(1024, java.security.SecureRandom.new)
-    key_pair = key_generator.generate_key_pair
-
+    key_generator = java.security.KeyPairGenerator.getInstance("RSA");
+    key_generator.initialize__method(1024);
+    key_pair = key_generator.gen_key_pair();
     @private_key = key_pair.get_private
     @public_key = key_pair.get_public
     fix_public_key!

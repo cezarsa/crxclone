@@ -1,0 +1,4 @@
+application: crxclone
+version: 1
+runtime: jruby
+precompilation_enabled: true

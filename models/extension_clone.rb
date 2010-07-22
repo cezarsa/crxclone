@@ -14,18 +14,18 @@ end
 class ExtensionClone
   include DataMapper::Resource
   property :id, Serial
-  property :generated_key, Blob, :lazy => true
+  property :generated_key, Blob
   property :generated_id, String
   property :last_update_request, DateTime
   property :created_at, DateTime
 
   belongs_to :extension
 
-  #REQUEST_UPDATE_URL = 'http://crxclone.appspot.com/cloned_extension/request_update'
-  #DOWNLOAD_URL = 'http://crxclone.appspot.com/cloned_extension/'
+  REQUEST_UPDATE_URL = 'http://crxclone.appspot.com/cloned_extension/request_update'
+  DOWNLOAD_URL = 'http://crxclone.appspot.com/cloned_extension/'
 
-  REQUEST_UPDATE_URL = 'http://localhost:8080/cloned_extension/request_update'
-  DOWNLOAD_URL = 'http://localhost:8080/cloned_extension/'
+  #REQUEST_UPDATE_URL = 'http://localhost:8080/cloned_extension/request_update'
+  #DOWNLOAD_URL = 'http://localhost:8080/cloned_extension/'
 
   def pack_clone
     cached = extension.cached_extension

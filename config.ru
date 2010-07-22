@@ -1,13 +1,7 @@
 require 'appengine-apis/logger'
 $logger = AppEngine::Logger.new
 
-require 'appengine-rack'
 require 'crxclone'
-
-AppEngine::Rack.configure_app(
-  :application => 'crxclone',
-  :version => 1,
-  :precompilation_enabled => true)
 
 =begin
 configure :development do
@@ -23,5 +17,6 @@ configure :development do
   use Sinatra::Reloader
 end
 =end
+
 
 run Sinatra::Application

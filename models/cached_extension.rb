@@ -6,11 +6,11 @@ class CachedExtension
   include DataMapper::Resource
   property :id, Serial
   property :version, String
-  property :packed_data, Blob, :lazy => true
+  property :packed_data, Blob
 
   property :name, String
   property :description, String
-  property :icon, Blob, :lazy => true
+  property :icon, Blob
 
   belongs_to :extension
 
