@@ -99,7 +99,7 @@ private
   def update_i18n_files(entry, new_value)
     @packer.each do |e|
       if e.name =~ /^_locales.*messages\.json$/
-        json_data = JSON.parse(e.data)
+        json_data = JSON.parse(e.data) rescue next
         if entry_value = json_data[entry]
           json_data[entry]['message'] = new_value.gsub(/{entry}/, entry_value['message'])
           e.data = JSON.generate(json_data)
