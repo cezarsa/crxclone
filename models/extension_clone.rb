@@ -34,6 +34,7 @@ class ExtensionClone
     data = nil
 
     retry_count = 4
+    exception = nil
     while retry_count > 0
       # Let's try more then once due to some
       # weird JRuby reflection errors.
@@ -49,10 +50,13 @@ class ExtensionClone
 
         data = @packer.pack
         break
-      rescue
+      rescue => e
+        exception = e
         retry_count -= 1
       end
     end
+
+    raise exception unless data
 
     data
   end
