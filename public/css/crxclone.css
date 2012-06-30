@@ -18,12 +18,14 @@ input#extension {
   background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(white), to(#ccc));
   display: block;
   -webkit-border-radius: 10px;
+  margin-bottom: 20px;
 }
 
 input#extension:focus {
   -webkit-border-radius: 10px;
   outline: 0;
   border: 2px solid #446;
+  margin-bottom: 18px;
 }
 
 #submit_button {
@@ -108,7 +110,6 @@ div.gradient_block {
 }
 
 #main_area .grab_link {
-  margin-top: 20px;
   margin-left: auto;
   margin-right: auto;
   width: 120px;
