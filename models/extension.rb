@@ -15,7 +15,6 @@ class Extension
 
   GALLERY_URL = 'https://chrome.google.com/extensions/detail/'
   UPDATE_URL = 'http://clients2.google.com/service/update2/crx'
-  HTTP_MODULE = AppEngine::URLFetch::HTTP
 
   def self.find_or_create(id)
     ext = Extension.first(:extension_id => id)
@@ -58,7 +57,7 @@ class Extension
   end
 
   def update_cache(update_url, version)
-    data = HTTP_MODULE.get(URI(update_url))
+    data = AppEngine::URLFetch.fetch(update_url).body
 
     cached = self.cached_extension
     if cached.nil?
@@ -78,8 +77,8 @@ class Extension
     params << "&v=#{current_version}" if current_version
     update_uri.query = "x=#{URI.encode(params, /[^\w.]/)}"
 
-    response = HTTP_MODULE.get(update_uri)
-    doc = REXML::Document.new(response)
+    response = AppEngine::URLFetch.fetch(update_uri.to_s)
+    doc = REXML::Document.new(response.body)
     elem = doc.elements["gupdate/app[@appid='#{self.extension_id}']/updatecheck"]
 
     raise ExtensionNotFoundError if elem.nil? or elem.attributes['status'] == 'error-unknownapplication'

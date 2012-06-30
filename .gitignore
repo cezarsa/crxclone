@@ -1,3 +1,4 @@
 .gems
-WEB-INF
+WEB-IN/lib
+WEB-IN/appengine-generated
 bin
